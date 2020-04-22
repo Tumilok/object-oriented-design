@@ -1,4 +1,7 @@
-package pl.agh.edu.dp.labirynth;
+package pl.agh.edu.dp.labirynth.elements;
+
+import pl.agh.edu.dp.labirynth.MapSite;
+import pl.agh.edu.dp.labirynth.MazeGame;
 
 public class Door extends MapSite {
     private Room room1;
@@ -9,10 +12,13 @@ public class Door extends MapSite {
         this.room2 = r2;
     }
 
+    public Room getRoomAtOthersSide(Room firstR) {
+        return room1 == firstR ? room2 : room1;
+    }
 
     @Override
-    public void Enter(){
-
+    public void Enter() {
+        System.out.println("You opened normal door");
     }
 
     public Room getRoom1() {

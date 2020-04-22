@@ -1,4 +1,7 @@
-package pl.agh.edu.dp.labirynth;
+package pl.agh.edu.dp.labirynth.elements;
+
+import pl.agh.edu.dp.labirynth.Direction;
+import pl.agh.edu.dp.labirynth.MapSite;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -8,8 +11,7 @@ public class Room extends MapSite
     private int roomNumber;
     private Map<Direction, MapSite> sides;
 
-
-    public Room(int number) {
+    public Room(int number){
         this.sides = new EnumMap<>(Direction.class);
         this.roomNumber = number;
     }
@@ -28,6 +30,6 @@ public class Room extends MapSite
 
     @Override
     public void Enter(){
-
+        System.out.println("You entered normal room");
     }
 }

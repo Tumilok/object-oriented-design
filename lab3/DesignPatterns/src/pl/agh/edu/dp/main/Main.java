@@ -1,15 +1,16 @@
 package pl.agh.edu.dp.main;
 
 import pl.agh.edu.dp.labirynth.*;
+import pl.agh.edu.dp.labirynth.builder.StandardMazeBuilder;
+import pl.agh.edu.dp.labirynth.factories.MazeFactory;
 
 public class Main {
-
     public static void main(String[] args) throws Exception {
-
         MazeGame mazeGame = new MazeGame();
-        Maze maze = mazeGame.createMaze(new StandardBuilderMaze());
-
-        System.out.println(maze.getRoomNumbers());
+        MazeFactory mazeFactory = MazeFactory.getInstance();
+        StandardMazeBuilder builder = new StandardMazeBuilder(mazeFactory);
+        mazeGame.createMaze(builder, mazeFactory);
+        mazeGame.start();
     }
 }
 
