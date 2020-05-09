@@ -2,46 +2,41 @@ package pl.edu.agh.to.lab4;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Finder {
-    private final Collection<Person> allPersons;
-
-    private final Map<String, Collection<Prisoner>> allPrisoners;
-
-    public Finder(Collection<Person> allPersons, Map<String, Collection<Prisoner>> allPrisoners) {
-        this.allPersons = allPersons;
-        this.allPrisoners = allPrisoners;
-    }
+    private final SuspectAggregate allPersons;
+    private final SuspectAggregate allPrisoners;
 
     public Finder(PersonDatabase personDatabase, PrisonersDatabase prisonersDatabase) {
-        this(personDatabase.getCracovPersons(), prisonersDatabase.getPrisoners());
+        this.allPersons = personDatabase;
+        this.allPrisoners = prisonersDatabase;
     }
 
     public void displayAllSuspectsWithName(String name) {
         ArrayList<Suspect> suspectedPersons = new ArrayList<Suspect>();
+        Iterator<? extends Suspect> prisonersIterator = allPrisoners.iterator();
+        Iterator<? extends Suspect> personsIterator = allPersons.iterator();
 
-        for (Collection<Prisoner> prisonerCollection : allPrisoners.values()) {
-            for (Prisoner prisoner : prisonerCollection) {
-                if (!prisoner.canBeSuspected() && prisoner.getFirstName().equals(name)) {
-                    suspectedPersons.add(prisoner);
-                }
+        while (prisonersIterator.hasNext()) {
+            Suspect tempSuspect = prisonersIterator.next();
+            if (tempSuspect.getFirstName().equals(name) && tempSuspect.canBeSuspected()) {
+                suspectedPersons.add(tempSuspect);
                 if (suspectedPersons.size() >= 10) {
                     break;
                 }
-            }
-            if (suspectedPersons.size() >= 10) {
-                break;
             }
         }
 
         if (suspectedPersons.size() < 10) {
-            for (Person person : allPersons) {
-                if (person.canBeSuspected() && person.getFirstName().equals(name)) {
-                    suspectedPersons.add(person);
-                }
-                if (suspectedPersons.size() >= 10) {
-                    break;
+            while (personsIterator.hasNext()) {
+                Suspect tempSuspect = personsIterator.next();
+                if (tempSuspect.getFirstName().equals(name) && tempSuspect.canBeSuspected()) {
+                    suspectedPersons.add(tempSuspect);
+                    if (suspectedPersons.size() >= 10) {
+                        break;
+                    }
                 }
             }
         }

@@ -1,11 +1,9 @@
 package pl.edu.agh.to.lab4;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class PrisonersDatabase {
+public class PrisonersDatabase implements SuspectAggregate {
 
     private final Map<String, Collection<Prisoner>> prisoners = new HashMap<String, Collection<Prisoner>>();
 
@@ -18,6 +16,16 @@ public class PrisonersDatabase {
         addPrisoner("Wiezienie przedmiejskie", new Prisoner("Zbigniew", "Nienajedzony", "90051452335", 2011, 1));
         addPrisoner("Wiezienie centralne", new Prisoner("Jan", "Przedziwny", "91103145223", 2009, 4));
         addPrisoner("Wiezienie centralne", new Prisoner("Janusz", "Podejrzany", "85121212456", 2012, 1));
+    }
+
+    @Override
+    public Iterator<Suspect> iterator() {
+        return new SuspectIterator(prisoners
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList())
+                .iterator());
     }
 
     public Map<String, Collection<Prisoner>> getPrisoners() {

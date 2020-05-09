@@ -20,7 +20,7 @@ public class Prisoner extends Suspect {
     }
 
     public boolean canBeSuspected() {
-        return judgementYear + sentenceDuration >= getCurrentYear();
+        return judgementYear + sentenceDuration < getCurrentYear();
     }
 
     private int getCurrentYear() {

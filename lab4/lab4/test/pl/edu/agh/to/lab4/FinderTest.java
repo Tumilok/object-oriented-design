@@ -23,7 +23,7 @@ public class FinderTest {
 
     private Map<String, Collection<Prisoner>> allPrisoners = new HashMap<String, Collection<Prisoner>>();
 
-    private Finder suspectFinder = new Finder(allPersons, allPrisoners);
+    private Finder suspectFinder = new Finder(new PersonDatabase(), new PrisonersDatabase());
 
     @Test
     public void testDisplayingNotJailedPrisoner() {
@@ -41,9 +41,9 @@ public class FinderTest {
 
     @Test
     public void testNotDisplayingTooYoungPerson() {
-        allPersons.add(new Person("Jan", "Kowalski", 15));
-        suspectFinder.displayAllSuspectsWithName("Jan");
-        assertContentIsNotDisplayed("Jan Kowalski");
+        allPersons.add(new Person("Vlad", "Kowalski", 15));
+        suspectFinder.displayAllSuspectsWithName("Vlad");
+        assertContentIsNotDisplayed("Vlad Kowalski");
     }
 
     @Test
