@@ -5,10 +5,10 @@
 #### Krok 1. Diagram UML:
 
 ##### Diagram podany na cwiczeniu
-![UML-CW](uml-cw.png)
+![UML-CW](res/uml-cw.png)
 
 ##### Nasz diagram:
-![UML](uml.png)
+![UML](res/uml.png)
 
 W odróżnieniu od diagramu podanego na ćwiczeniu nasz diagram wyświetla zależność między klasami **Finder** i **PrisonerDataProvider**/**PersonDatabase**, a nie asocjacje, bo podane wyżej klasy nie zawierają obiektów klasy **Finder**.
 
@@ -789,8 +789,8 @@ public class Application {
 
 **h)** Resultat przykładowego wywółania programu
 
-![result](result.png)
+![result](res/result.png)
 
 **i)** Resultat wywołania testów
 
-![test](test.png)
+![test](res/test.png)
