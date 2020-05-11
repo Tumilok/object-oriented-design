@@ -2,14 +2,17 @@ package pl.edu.agh.to.lab4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import pl.edu.agh.to.lab4.database.CompositeAggregate;
+import pl.edu.agh.to.lab4.database.PersonDatabase;
+import pl.edu.agh.to.lab4.database.PrisonersDatabase;
+import pl.edu.agh.to.lab4.database.SuspectAggregate;
+import pl.edu.agh.to.lab4.filter.NameSearchStrategy;
+import pl.edu.agh.to.lab4.model.Prisoner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,39 +21,43 @@ public class FinderTest {
     private ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     private PrintStream originalOut;
+    PersonDatabase personDatabase = new PersonDatabase();
+    PrisonersDatabase prisonersDatabase = new PrisonersDatabase();
+    private Finder suspectFinder;
 
-    private Collection<Person> allPersons = new ArrayList<Person>();
-
-    private Map<String, Collection<Prisoner>> allPrisoners = new HashMap<String, Collection<Prisoner>>();
-
-    private Finder suspectFinder = new Finder(new PersonDatabase(), new PrisonersDatabase());
+    public FinderTest() {
+        List<SuspectAggregate> databases = new ArrayList<>();
+        databases.add(personDatabase);
+        databases.add(prisonersDatabase);
+        suspectFinder = new Finder(new CompositeAggregate(databases));
+    }
 
     @Test
     public void testDisplayingNotJailedPrisoner() {
         addPrisoner("Wiezeienie stanowe", new Prisoner("Jan", "Kowalski", "802104543357", 2000, 1));
-        suspectFinder.displayAllSuspectsWithName("Jan");
+        suspectFinder.display(new NameSearchStrategy("Jan"));
         assertContentIsDisplayed("Jan Kowalski");
     }
 
     @Test
     public void testDisplayingSuspectedPerson() {
-        allPersons.add(new Person("Jan", "Kowalski", 20));
-        suspectFinder.displayAllSuspectsWithName("Jan");
+        personDatabase.addCracovPerson("Jan", "Kowalski", 20);
+        suspectFinder.display(new NameSearchStrategy("Jan"));
         assertContentIsDisplayed("Jan Kowalski");
     }
 
     @Test
     public void testNotDisplayingTooYoungPerson() {
-        allPersons.add(new Person("Vlad", "Kowalski", 15));
-        suspectFinder.displayAllSuspectsWithName("Vlad");
-        assertContentIsNotDisplayed("Vlad Kowalski");
+        personDatabase.addCracovPerson("Janusz", "Kowalski", 15);
+        suspectFinder.display(new NameSearchStrategy("Jan"));
+        assertContentIsNotDisplayed("Janusz Kowalski");
     }
 
     @Test
     public void testNotDisplayingJailedPrisoner() {
-        allPersons.add(new Person("Jan", "Kowalski", 20));
+        personDatabase.addCracovPerson("Jan", "Kowalski", 20);
         addPrisoner("Wiezeienie stanowe", new Prisoner("Jan", "Kowalski2", "802104543357", 2000, 20));
-        suspectFinder.displayAllSuspectsWithName("Jan");
+        suspectFinder.display(new NameSearchStrategy("Jan"));
         assertContentIsNotDisplayed("Jan Kowalski2");
     }
 
@@ -76,8 +83,8 @@ public class FinderTest {
     }
 
     private void addPrisoner(String category, Prisoner news) {
-        if (!allPrisoners.containsKey(category))
-            allPrisoners.put(category, new ArrayList<Prisoner>());
-        allPrisoners.get(category).add(news);
+        if (!prisonersDatabase.getPrisoners().containsKey(category))
+            prisonersDatabase.getPrisoners().put(category, new ArrayList<Prisoner>());
+        prisonersDatabase.addPrisoner(category, news);
     }
 }
