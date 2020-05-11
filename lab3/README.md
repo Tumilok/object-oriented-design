@@ -558,7 +558,7 @@ public class Main {
 
 **e)** Wynik działania programu
 
-![Result](result.jpg)
+![Result](res/result.jpg)
 
 **a)** Zademonstruj, że MazeFactory faktycznie jest Singletonem (najłatwiej stworzyć przykład,w którym się sprawdza, czy obiekt zwracany przy 2 konstrukcji to faktycznie ten sam, któryzostał stworzony na początku).
 
@@ -586,4 +586,4 @@ class MazeFactoryTest {
 ```
 Poniżej został przedstawiony wynik testów:
 
-![Test](test.jpg)
+![Test](res/test.jpg)
