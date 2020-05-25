@@ -9,10 +9,12 @@ public class Product {
 	
     private final String name;
     private final BigDecimal price;
+    private final BigDecimal discount;
 
-    public Product(String name, BigDecimal price) {
+    public Product(String name, BigDecimal price, BigDecimal discount) {
         this.name = name;
         this.price = price;
+        this.discount = discount;
         this.price.setScale(PRICE_PRECISION, ROUND_STRATEGY);
     }
 
@@ -22,5 +24,11 @@ public class Product {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public BigDecimal getDiscount() { return discount; }
+
+    public BigDecimal getPriceWithDiscount() {
+        return getPrice().subtract(getPrice().multiply(discount).setScale(PRICE_PRECISION, ROUND_STRATEGY));
     }
 }

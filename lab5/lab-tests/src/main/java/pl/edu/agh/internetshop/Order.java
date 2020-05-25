@@ -14,12 +14,14 @@ public class Order {
     private Shipment shipment;
     private ShipmentMethod shipmentMethod;
     private PaymentMethod paymentMethod;
+    private final BigDecimal discount;
 
-    public Order(List<Product> products) {
+    public Order(List<Product> products, BigDecimal discount) {
         this.products = Objects.requireNonNull(products, "product cannot be null");
         this.products.forEach((p)->Objects.requireNonNull(p,"product cannot be null"));
         id = UUID.randomUUID();
         paid = false;
+        this.discount = discount;
     }
 
     public UUID getId() {
@@ -52,8 +54,24 @@ public class Order {
         return price;
     }
 
+    public BigDecimal getPriceWithProductDiscount() {
+        BigDecimal price = BigDecimal.valueOf(0.0);
+        for (Product product: products) {
+            price = price.add(product.getPriceWithDiscount());
+        }
+        return price;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public BigDecimal getPriceWithDiscount() {
+        return getPriceWithProductDiscount().subtract(getPriceWithProductDiscount().multiply(discount).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY));
+    }
+
     public BigDecimal getPriceWithTaxes() {
-        return getPrice().multiply(TAX_VALUE).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
+        return getPriceWithDiscount().multiply(TAX_VALUE).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
     }
 
     public List<Product> getProducts() {
