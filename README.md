@@ -1,7 +1,7 @@
 # object-oriented-design
-This repo contains solutions to PO labs
+This repo contains solutions to various tasks related to object-oriented design, realized during the Computer Science course at AGH UST.
 
-* lab1 [CRC Card & UML](lab1)
-* lab2 [Making changes to an existing application](lab2)
-* lab3 [Design patterns](lab3)
-* lab4 [Code refactoring](lab4)
+* [CRC Card & UML](lab1)
+* [Making changes to an existing application](lab2)
+* [Design patterns](lab3)
+* [Code refactoring](lab4)
