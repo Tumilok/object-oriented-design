@@ -1,20 +1,23 @@
 package pl.edu.agh.internetshop;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
 public class Order {
     private static final BigDecimal TAX_VALUE = BigDecimal.valueOf(1.23);
 	private final UUID id;
-    private final Product product;
+    private final List<Product> products;
     private boolean paid;
     private Shipment shipment;
     private ShipmentMethod shipmentMethod;
     private PaymentMethod paymentMethod;
 
-    public Order(Product product) {
-        this.product = product;
+    public Order(List<Product> products) {
+        this.products = Objects.requireNonNull(products, "product cannot be null");
+        this.products.forEach((p)->Objects.requireNonNull(p,"product cannot be null"));
         id = UUID.randomUUID();
         paid = false;
     }
@@ -42,15 +45,19 @@ public class Order {
     }
 
     public BigDecimal getPrice() {
-        return product.getPrice();
+        BigDecimal price = BigDecimal.valueOf(0.0);
+        for (Product product: products) {
+            price = price.add(product.getPrice());
+        }
+        return price;
     }
 
     public BigDecimal getPriceWithTaxes() {
         return getPrice().multiply(TAX_VALUE).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
     public ShipmentMethod getShipmentMethod() {
