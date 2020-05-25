@@ -84,7 +84,7 @@ public class OrderTest {
 		Order order = getOrderWithCertainProductPrice(2); // 2 PLN
 
 		// then
-		assertBigDecimalCompareValue(order.getPriceWithTaxes(), BigDecimal.valueOf(2.44)); // 2.44 PLN
+		assertBigDecimalCompareValue(order.getPriceWithTaxes(), BigDecimal.valueOf(2.46)); // 2.46 PLN
 	}
 
 	@Test
