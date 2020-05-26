@@ -14,36 +14,14 @@ public class Order {
     private Shipment shipment;
     private ShipmentMethod shipmentMethod;
     private PaymentMethod paymentMethod;
-    private final BigDecimal discount;
+    private BigDecimal discount;
+    private String ordersPayerSurname;
 
-    public Order(List<Product> products, BigDecimal discount) {
+    public Order(List<Product> products) {
         this.products = Objects.requireNonNull(products, "product cannot be null");
-        this.products.forEach((p)->Objects.requireNonNull(p,"product cannot be null"));
+        this.products.forEach((p) -> Objects.requireNonNull(p,"product cannot be null"));
         id = UUID.randomUUID();
         paid = false;
-        this.discount = discount;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public boolean isSent() {
-        return shipment != null && shipment.isShipped();
-    }
-
-    public boolean isPaid() { return paid; }
-
-    public Shipment getShipment() {
-        return shipment;
     }
 
     public BigDecimal getPrice() {
@@ -62,33 +40,22 @@ public class Order {
         return price;
     }
 
-    public BigDecimal getDiscount() {
-        return discount;
-    }
-
     public BigDecimal getPriceWithDiscount() {
-        return getPriceWithProductDiscount().subtract(getPriceWithProductDiscount().multiply(discount).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY));
+        if (discount != null) {
+            return getPriceWithProductDiscount()
+                    .subtract(getPriceWithProductDiscount().multiply(discount)
+                    .setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY));
+        }
+        return getPriceWithProductDiscount();
     }
 
     public BigDecimal getPriceWithTaxes() {
         return getPriceWithDiscount().multiply(TAX_VALUE).setScale(Product.PRICE_PRECISION, Product.ROUND_STRATEGY);
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public ShipmentMethod getShipmentMethod() {
-        return shipmentMethod;
-    }
-
-    public void setShipmentMethod(ShipmentMethod shipmentMethod) {
-        this.shipmentMethod = shipmentMethod;
-    }
-
     public void send() {
-        boolean sentSuccesful = getShipmentMethod().send(shipment, shipment.getSenderAddress(), shipment.getRecipientAddress());
-        shipment.setShipped(sentSuccesful);
+        boolean sentSuccessful = getShipmentMethod().send(shipment, shipment.getSenderAddress(), shipment.getRecipientAddress());
+        shipment.setShipped(sentSuccessful);
     }
 
     public void pay(MoneyTransfer moneyTransfer) {
@@ -96,7 +63,53 @@ public class Order {
         paid = moneyTransfer.isCommitted();
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public boolean isSent() {
+        return shipment != null && shipment.isShipped();
+    }
+
+    public boolean isPaid() { return paid; }
+
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
+    }
+
+    public Shipment getShipment() {
+        return shipment;
+    }
+
+    public void setDiscount(BigDecimal discount) { this.discount = discount; }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setOrdersPayerSurname(String ordersPayerSurname) { this.ordersPayerSurname = ordersPayerSurname; }
+
+    public String getOrdersPayerSurname() {
+        return ordersPayerSurname;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setShipmentMethod(ShipmentMethod shipmentMethod) {
+        this.shipmentMethod = shipmentMethod;
+    }
+
+    public ShipmentMethod getShipmentMethod() {
+        return shipmentMethod;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 }
