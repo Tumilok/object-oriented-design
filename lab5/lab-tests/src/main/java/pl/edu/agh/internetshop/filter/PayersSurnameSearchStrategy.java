@@ -1,4 +1,6 @@
-package pl.edu.agh.internetshop;
+package pl.edu.agh.internetshop.filter;
+
+import pl.edu.agh.internetshop.Order;
 
 public class PayersSurnameSearchStrategy implements SearchStrategy {
     private String payersSurname;
@@ -9,6 +11,9 @@ public class PayersSurnameSearchStrategy implements SearchStrategy {
 
     @Override
     public boolean filter(Order order) {
-        return order.getOrdersPayerSurname().equals(this.payersSurname);
+        if (order.getOrdersPayerSurname() != null) {
+            return order.getOrdersPayerSurname().equals(this.payersSurname);
+        }
+        return false;
     }
 }

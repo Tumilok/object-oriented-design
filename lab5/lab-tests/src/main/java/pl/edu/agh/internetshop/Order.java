@@ -18,7 +18,7 @@ public class Order {
     private String ordersPayerSurname;
 
     public Order(List<Product> products) {
-        this.products = Objects.requireNonNull(products, "product cannot be null");
+        this.products = Objects.requireNonNull(products, "products cannot be null");
         this.products.forEach((p) -> Objects.requireNonNull(p,"product cannot be null"));
         id = UUID.randomUUID();
         paid = false;

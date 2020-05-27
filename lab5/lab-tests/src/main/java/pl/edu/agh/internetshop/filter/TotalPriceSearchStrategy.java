@@ -1,4 +1,6 @@
-package pl.edu.agh.internetshop;
+package pl.edu.agh.internetshop.filter;
+
+import pl.edu.agh.internetshop.Order;
 
 import java.math.BigDecimal;
 

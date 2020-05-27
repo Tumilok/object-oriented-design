@@ -9,7 +9,6 @@ import static pl.edu.agh.internetshop.util.CustomAssertions.assertBigDecimalComp
 
 
 public class ProductTest {
-
     private static final String NAME = "Mr. Sparkle";
     private static final BigDecimal PRICE = BigDecimal.valueOf(1);
     private static final BigDecimal DISCOUNT = BigDecimal.valueOf(0);

@@ -1,4 +1,7 @@
-package pl.edu.agh.internetshop;
+package pl.edu.agh.internetshop.filter;
+
+import pl.edu.agh.internetshop.Order;
+import pl.edu.agh.internetshop.Product;
 
 import java.util.List;
 
@@ -12,8 +15,8 @@ public class ProductNameSearchStrategy implements SearchStrategy {
     @Override
     public boolean filter(Order order) {
         List<Product> products = order.getProducts();
-        for (Product p : products) {
-            if (p.getName().equals(this.name)) {
+        for (Product product: products) {
+            if (product.getName().equals(this.name)) {
                 return true;
             }
         }

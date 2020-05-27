@@ -1,21 +1,21 @@
 package pl.edu.agh.internetshop;
 
+import pl.edu.agh.internetshop.filter.SearchStrategy;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrdersHistory {
-    private List<Order> pastOrders;
+    private final List<Order> pastOrders;
 
     public OrdersHistory(List<Order> pastOrders) {
-        this.pastOrders = pastOrders;
+        this.pastOrders = Objects.requireNonNull(pastOrders, "pastOrders cannot be null");
+        this.pastOrders.forEach((p) -> Objects.requireNonNull(p,"order cannot be null"));
     }
 
     public void addOrder(Order order){
         this.pastOrders.add(order);
-    }
-
-    public void setPastOrders(List<Order> pastOrders) {
-        this.pastOrders = pastOrders;
     }
 
     public List<Order> getPastOrders() {

@@ -3,7 +3,6 @@ package pl.edu.agh.internetshop;
 import java.math.BigDecimal;
 
 public class Product {
-	
 	public static final int PRICE_PRECISION = 2;
 	public static final int ROUND_STRATEGY = BigDecimal.ROUND_HALF_UP;
 	
